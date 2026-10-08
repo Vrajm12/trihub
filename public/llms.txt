@@ -1,0 +1,44 @@
+# Trihub
+
+> Trihub is a business software platform by Triverse Solutions Private Limited (Kamshet, Maharashtra, India) that brings CRM, ERP, workflow automation, analytics and custom business software together on one connected system, configured around how each business actually works. Pricing is on request.
+
+Website: https://trihub.tech
+Publisher: Triverse Solutions Private Limited — https://triversesolutions.co.in
+Contact: support@trihub.tech
+
+## What Trihub does
+
+- **CRM** — lead capture from forms, ads and WhatsApp; contacts; follow-up reminders; custom sales stages; pipeline and conversion analytics.
+- **ERP** — procurement and purchase orders, multi-location inventory, operations and work orders, HR (attendance, leave, roles, payroll inputs), project and job costing, finance (GST-ready invoicing, receivables, expenses).
+- **Automation** — visual workflows with triggers, conditions and actions across modules: lead assignment, WhatsApp and email messages, approvals, scheduled jobs, webhooks.
+- **Analytics** — role-specific dashboards built on live operational data.
+- **Communication** — WhatsApp, email and call activity attached to the right customer, deal or record.
+- **Custom software** — custom CRMs, ERPs, client portals, internal tools, dashboards and API integrations, designed around a business's own processes.
+
+All modules share one data model, so a won deal can create the customer record, order and invoice without re-entry.
+
+## Who it is for
+
+Growing businesses that have outgrown spreadsheets and disconnected apps: SMEs, startups, education (admissions, students, fees), real estate (portal leads, site visits, bookings), manufacturing (inventory, procurement, production, dispatch), professional services (clients, projects, timesheets, billing), healthcare (enquiries, appointments, billing) and retail (stock, orders, customers).
+
+## Plans
+
+- CRM: Starter (small teams), Growth (growing businesses), Enterprise (complex organisations).
+- ERP: custom, built around the customer's operations.
+- Custom platform: scoped on request.
+
+Pricing for every plan is provided on request after a demo.
+
+## How implementation works
+
+1. Map how work moves through the business today.
+2. Configure Trihub around stages, roles and approvals; build custom modules where needed.
+3. Migrate existing data and train each team.
+4. Ongoing support and extension by the team that built the system.
+
+## Pages
+
+- [Home](https://trihub.tech/): product overview, modules, industries, plans and FAQ
+- [Privacy Policy](https://trihub.tech/privacy/)
+- [Terms of Use](https://trihub.tech/terms/)
+- [Triverse Solutions](https://triversesolutions.co.in): the company that builds Trihub
