@@ -83,3 +83,12 @@ Every 3D element is a product concept, not decoration:
 - No WebGL, a scene error or a still-loading chunk all show a static poster. Every 3D element is `aria-hidden`, and its content exists in the DOM (tabs, lists, panels).
 - `prefers-reduced-motion`: parallax, orbits and scroll-scrubbing are disabled; the Problem section shows its resolved state.
 - Keyboard: skip link, visible focus rings, arrow-key tab lists, native `<dialog>` with Esc and focus containment.
+
+
+---
+
+## Case Study & Architecture Articles
+
+- **Project Overview:** [Trihub Case Study on veerajmatnale.me](https://veerajmatnale.me/work/trihub)
+- **Architecture Deep Dive:** [Building Trihub: Unified CRM & ERP on a Multi-Tenant Architecture](https://veerajmatnale.me/writing/building-trihub-multi-tenant)
+- **Company:** [Triverse Solutions Private Limited](https://triversesolutions.co.in) — [Custom ERP & CRM Development in Pune](https://triversesolutions.co.in/pune/erp-development)
