@@ -1,7 +1,7 @@
 import { useRef, type ReactNode, type MouseEventHandler } from 'react'
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { useFinePointer } from '@/hooks/useMediaQuery'
+import { useFinePointer, usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'light' | 'outline-light'
 type Size = 'sm' | 'md' | 'lg'
@@ -52,7 +52,7 @@ export function Button({
 }: ButtonProps) {
   const ref = useRef<HTMLElement>(null)
   const fine = useFinePointer()
-  const reduced = useReducedMotion()
+  const reduced = usePrefersReducedMotion()
   const active = magnetic && fine && !reduced
 
   const mx = useMotionValue(0)
@@ -90,10 +90,12 @@ export function Button({
 
   const common = {
     className: classes,
+    'data-button-motion': '',
     style: active ? { x, y } : undefined,
     onPointerMove: onMove,
     onPointerLeave: onLeave,
-    whileTap: { scale: 0.975 },
+    whileHover: reduced ? undefined : { scale: 1.015 },
+    whileTap: reduced ? undefined : { scale: 0.975 },
     onClick,
     ...rest,
   }

@@ -23,8 +23,11 @@ export const palette = {
 
 export function createMaterials(quality: Quality) {
   const hi = quality === 'high'
-  const physical = (p: THREE.MeshPhysicalMaterialParameters) =>
-    hi ? new THREE.MeshPhysicalMaterial(p) : new THREE.MeshStandardMaterial(p as THREE.MeshStandardMaterialParameters)
+  const physical = (p: THREE.MeshPhysicalMaterialParameters) => {
+    if (hi) return new THREE.MeshPhysicalMaterial(p)
+    const { clearcoat: _clearcoat, clearcoatRoughness: _clearcoatRoughness, ...standard } = p
+    return new THREE.MeshStandardMaterial(standard)
+  }
 
   return {
     ceramic: physical({ color: palette.ceramic, roughness: 0.42, metalness: 0, clearcoat: 0.6, clearcoatRoughness: 0.3 }),

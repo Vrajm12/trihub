@@ -1,194 +1,148 @@
-import { useRef, useState, type KeyboardEvent } from 'react'
-import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
-import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Reveal } from '@/components/ui/Reveal'
-import { LogoMark } from '@/components/ui/Logo'
-import { industries } from '@/data/industries'
-import { ease } from '@/lib/motion'
-import { cn } from '@/lib/utils'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { industries, type Industry } from '@/data/industries'
 
-const corners = [
-  [24, 22],
-  [76, 22],
-  [24, 78],
-  [76, 78],
-] as const
+const industryGroups = [
+  {
+    id: 'established-industries',
+    eyebrow: '01 / ESTABLISHED INDUSTRIES',
+    title: 'Systems for the work that keeps business moving.',
+    description:
+      'Bring complex, day-to-day operations into one clear flow, from the first enquiry through delivery.',
+    image: '/industries-core.png',
+    imageAlt: 'Education, real estate, manufacturing, and professional services',
+    items: industries.slice(0, 4),
+  },
+  {
+    id: 'growing-industries',
+    eyebrow: '02 / GROWING BUSINESSES',
+    title: 'More room to grow. Less work falling through.',
+    description:
+      'Keep service, sales and operations connected as your customers, team and business grow.',
+    image: '/industries-growth.png',
+    imageAlt: 'Healthcare, retail, startups, and small and medium-sized businesses',
+    items: industries.slice(4),
+  },
+]
 
-export function Industries() {
-  const [index, setIndex] = useState(0)
-  const tabs = useRef<(HTMLButtonElement | null)[]>([])
-  const ind = industries[index]
+function IndustryGroup({
+  group,
+  reverse = false,
+}: {
+  group: (typeof industryGroups)[number]
+  reverse?: boolean
+}) {
+  return (
+    <article
+      id={group.id}
+      aria-labelledby={`${group.id}-title`}
+      className="grid items-center gap-8 border-t border-line py-12 sm:gap-10 sm:py-16 md:grid-cols-2 lg:gap-16 lg:py-20"
+    >
+      <figure className={`flex items-center justify-center ${reverse ? 'md:order-2' : ''}`}>
+        <img
+          src={group.image}
+          alt={group.imageAlt}
+          loading="lazy"
+          className="h-auto w-full max-w-2xl object-contain"
+        />
+      </figure>
 
-  const onKey = (e: KeyboardEvent, i: number) => {
-    const n = industries.length
-    const next = ['ArrowDown', 'ArrowRight'].includes(e.key) ? (i + 1) % n : ['ArrowUp', 'ArrowLeft'].includes(e.key) ? (i - 1 + n) % n : null
-    if (next === null) return
-    e.preventDefault()
-    setIndex(next)
-    tabs.current[next]?.focus()
-  }
+      <div className={reverse ? 'md:order-1' : ''}>
+        <p className="eyebrow">{group.eyebrow}</p>
+        <h2
+          id={`${group.id}-title`}
+          className="mt-4 max-w-xl text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.045em]"
+        >
+          {group.title}
+        </h2>
+        <p className="mt-4 max-w-xl leading-relaxed text-ink-2">{group.description}</p>
+
+        <ul className="mt-7 grid gap-x-6 sm:grid-cols-2">
+          {group.items.map((industry: Industry) => {
+            const Icon = industry.icon
+            return (
+              <li key={industry.id} className="border-t border-line py-5">
+                <div className="flex items-center gap-2.5">
+                  <Icon size={17} className="shrink-0 text-accent" aria-hidden="true" />
+                  <h3 className="text-[0.9375rem] font-semibold">{industry.label}</h3>
+                </div>
+                <p className="mt-2 text-[0.9375rem] font-medium leading-snug">{industry.headline}</p>
+                <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-2">{industry.description}</p>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </article>
+  )
+}
+
+export function Industries({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' }) {
+  const Heading = headingLevel
 
   return (
-    <section id="industries" aria-labelledby="industries-title" className="section-y relative bg-surface">
-      <div className="container-x">
-        <SectionHeading
-          id="industries-title"
-          eyebrow="Industries"
-          title="Configured for how your industry works."
-          lead="The same connected platform, arranged around the records and steps that matter in your business."
+    <>
+      <header
+        aria-labelledby="industries-title"
+        className="relative grid min-h-[calc(100svh-var(--nav-h))] place-items-center overflow-hidden border-b border-line bg-canvas px-[var(--gutter)] py-20 text-center"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-36 top-1/4 h-72 w-72 rounded-full border border-accent/10 sm:-left-44 sm:h-96 sm:w-96"
         />
-
-        <div className="mt-14 grid gap-6 lg:mt-20 lg:grid-cols-12 lg:gap-10">
-          <Reveal className="lg:col-span-4">
-            <LayoutGroup>
-              <div
-                role="tablist"
-                aria-label="Industries"
-                aria-orientation="vertical"
-                className="-mx-[var(--gutter)] flex gap-2 overflow-x-auto px-[var(--gutter)] pb-1 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:gap-0.5 lg:overflow-visible lg:px-0"
-              >
-                {industries.map((it, i) => {
-                  const active = i === index
-                  const Icon = it.icon
-                  return (
-                    <button
-                      key={it.id}
-                      ref={(el) => void (tabs.current[i] = el)}
-                      role="tab"
-                      id={`ind-tab-${it.id}`}
-                      aria-selected={active}
-                      aria-controls="industry-panel"
-                      tabIndex={active ? 0 : -1}
-                      onClick={() => setIndex(i)}
-                      onKeyDown={(e) => onKey(e, i)}
-                      className={cn(
-                        'relative flex shrink-0 items-center gap-3 rounded-full px-4 py-2.5 text-left text-[0.9375rem] font-medium transition-colors lg:rounded-[14px] lg:py-3.5',
-                        active ? 'text-ink' : 'text-ink-2 hover:text-ink',
-                        !active && 'ring-1 ring-line lg:ring-0',
-                      )}
-                    >
-                      {active && (
-                        <motion.span
-                          layoutId="industry-pill"
-                          className="absolute inset-0 rounded-full bg-canvas ring-1 ring-line-strong lg:rounded-[14px]"
-                          transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-                        />
-                      )}
-                      <Icon size={17} className="relative" />
-                      <span className="relative whitespace-nowrap">{it.label}</span>
-                      {active && <ArrowRight size={15} className="relative ml-auto hidden text-ink-2 lg:block" />}
-                    </button>
-                  )
-                })}
-              </div>
-            </LayoutGroup>
-          </Reveal>
-
-          <Reveal index={1} className="lg:col-span-8">
-            <div
-              id="industry-panel"
-              role="tabpanel"
-              aria-labelledby={`ind-tab-${ind.id}`}
-              className="dot-grid relative overflow-hidden rounded-xl bg-canvas p-6 ring-1 ring-line sm:p-10"
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 bottom-[-5rem] h-72 w-72 rounded-full border border-accent/10 sm:-right-40 sm:h-96 sm:w-96"
+        />
+        <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center">
+          <p className="eyebrow">Connected business operations</p>
+          <Heading
+            id="industries-title"
+            className="industries-hero-title mt-7 font-semibold"
+          >
+            <span className="text-ink">Industries We</span>{' '}
+            <span className="text-accent">Serve.</span>
+          </Heading>
+          <p className="mt-7 max-w-2xl text-lead text-ink-2">
+            Connected systems shaped around the way your industry works — from the first customer
+ conversation to the work that happens behind it.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+            <a
+              href="#industry-groups"
+              className="inline-flex h-12 items-center gap-2 rounded-full bg-ink px-6 text-[0.9375rem] font-semibold text-white transition-colors hover:bg-accent"
             >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={ind.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <motion.h3
-                    initial={{ y: 10 }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.6, ease: ease.outExpo }}
-                    className="max-w-lg text-h3 font-semibold"
-                  >
-                    {ind.headline}
-                  </motion.h3>
-                  <p className="mt-3 max-w-xl text-ink-2">{ind.description}</p>
-
-                  {/* System diagram: hub + four modules */}
-                  <div className="stage-3d relative mt-8 sm:h-[300px]">
-                    <svg aria-hidden className="absolute inset-0 hidden h-full w-full sm:block" viewBox="0 0 100 100" preserveAspectRatio="none">
-                      {corners.map(([x, y], i) => (
-                        <motion.line
-                          key={i}
-                          x1={50}
-                          y1={50}
-                          x2={x}
-                          y2={y}
-                          stroke="var(--color-accent)"
-                          strokeOpacity={0.35}
-                          strokeWidth={1}
-                          vectorEffect="non-scaling-stroke"
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          transition={{ duration: 0.7, delay: 0.15 + i * 0.06, ease: ease.outExpo }}
-                        />
-                      ))}
-                    </svg>
-                    <div className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
-                      <div className="grid h-16 w-16 place-items-center rounded-[18px] bg-night shadow-float">
-                        <LogoMark className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-
-                    <ul className="grid gap-3 sm:block">
-                      {ind.modules.map((m, i) => (
-                        <motion.li
-                          key={m.name}
-                          initial={{ opacity: 0, rotateX: -50, z: -60 }}
-                          animate={{ opacity: 1, rotateX: 0, z: 0 }}
-                          transition={{ duration: 0.8, delay: 0.05 + i * 0.07, ease: ease.outExpo }}
-                          className="sm:absolute sm:w-[36%] sm:-translate-x-1/2 sm:-translate-y-1/2"
-                          style={{ left: `${corners[i][0]}%`, top: `${corners[i][1]}%` }}
-                        >
-                          <div className="card p-4 shadow-md">
-                            <div className="flex items-center justify-between">
-                              <p className="text-[0.9375rem] font-semibold tracking-[-0.01em]">{m.name}</p>
-                              <span className="num text-[0.6875rem] text-ink-3">0{i + 1}</span>
-                            </div>
-                            <p className="mt-1 text-[0.8125rem] text-ink-2">{m.detail}</p>
-                          </div>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Flow */}
-                  <div className="mt-8 border-t border-line pt-6">
-                    <p className="text-[0.75rem] font-medium uppercase tracking-[0.12em] text-ink-2">Typical flow</p>
-                    <ol className="mt-3 flex flex-wrap items-center gap-y-2">
-                      {ind.flow.map((f, i) => (
-                        <motion.li
-                          key={f}
-                          initial={{ opacity: 0, x: -6 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.3 + i * 0.08, ease: ease.outExpo }}
-                          className="flex items-center"
-                        >
-                          <span
-                            className={cn(
-                              'rounded-full px-3 py-1.5 text-[0.8125rem] font-medium',
-                              i === ind.flow.length - 1 ? 'bg-ink text-white' : 'bg-surface ring-1 ring-line',
-                            )}
-                          >
-                            {f}
-                          </span>
-                          {i < ind.flow.length - 1 && <span className="mx-1.5 h-px w-4 bg-line-strong" />}
-                        </motion.li>
-                      ))}
-                    </ol>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </Reveal>
+              Explore industries <ArrowDown size={16} aria-hidden="true" />
+            </a>
+            <a
+              href="/contact/"
+              className="inline-flex items-center gap-1.5 text-[0.9375rem] font-semibold text-ink transition-colors hover:text-accent"
+            >
+              Talk to our team <ArrowUpRight size={16} aria-hidden="true" />
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
+      </header>
+
+      <section id="industries" aria-label="Industries served" className="bg-canvas">
+        <div id="industry-groups" className="container-x">
+          {industryGroups.map((group, index) => (
+            <IndustryGroup key={group.id} group={group} reverse={index === 1} />
+          ))}
+        </div>
+      </section>
+
+      <footer className="border-t border-line bg-canvas px-[var(--gutter)] py-16 text-center sm:py-20">
+        <p className="eyebrow">A better fit for your business</p>
+        <h2 className="mx-auto mt-4 max-w-2xl text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-tight tracking-[-0.045em]">
+          Start with the way your team works.
+        </h2>
+        <a
+          href="/contact/"
+          className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-accent px-6 text-[0.9375rem] font-semibold text-white transition-colors hover:bg-ink"
+        >
+          Talk to our team <ArrowUpRight size={16} aria-hidden="true" />
+        </a>
+      </footer>
+    </>
   )
 }

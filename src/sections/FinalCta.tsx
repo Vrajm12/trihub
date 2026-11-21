@@ -24,9 +24,9 @@ export function FinalCta() {
       />
       <div className="container-x relative pt-[var(--section-y)] text-center">
         <Reveal>
-          <h2 id="cta-title" className="mx-auto max-w-3xl text-h2 font-semibold">
+          <h1 id="cta-title" className="mx-auto max-w-3xl text-h2 font-semibold">
             Ready to connect your business?
-          </h2>
+          </h1>
         </Reveal>
         <Reveal index={1}>
           <p className="mx-auto mt-5 max-w-md text-lead text-ink-2">Let’s build the system your business actually needs.</p>

@@ -1,4 +1,5 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source(none);
+@source "../";
 
 /* ==========================================================================
    TRIHUB DESIGN SYSTEM
@@ -17,8 +18,8 @@
   --color-surface-2: #f1f2f5;
   --color-surface-3: #e9ebef;
   --color-ink: #111318;
-  --color-ink-2: #626872;
-  --color-ink-3: #8a9099; /* decorative / non-essential only (3:1) */
+  --color-ink-2: #111318;
+  --color-ink-3: #111318;
   --color-line: rgb(17 19 24 / 0.08);
   --color-line-strong: rgb(17 19 24 / 0.14);
 
@@ -152,6 +153,26 @@
     padding-block: var(--section-y);
   }
 
+  .product-catalog {
+    background: var(--color-canvas);
+  }
+  .industries-hero-title {
+    font-size: clamp(2.5rem, 10vw, 8.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.075em;
+  }
+  .product-catalog-artwork--system {
+    border-radius: 42% 20% 20% 20%;
+    background: var(--color-accent-soft);
+  }
+  .product-catalog-artwork--accent {
+    border-radius: 150px 24px 24px 24px;
+    background: var(--color-accent-soft);
+  }
+  .product-catalog-artwork--neutral {
+    border-radius: 24px 150px 24px 24px;
+    background: var(--color-surface-2);
+  }
   .eyebrow {
     font-size: var(--text-micro);
     line-height: 1.2;
@@ -206,6 +227,14 @@
 }
 
 @layer utilities {
+  .text-ink-2 {
+    font-weight: 400;
+  }
+
+  .text-ink-3 {
+    font-weight: 400;
+  }
+
   .text-balance {
     text-wrap: balance;
   }
@@ -231,6 +260,26 @@
     opacity: 0;
     transform: translateY(12px) scale(0.985);
   }
+}
+
+@keyframes dialog-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+.product-info-dialog[data-closing] {
+  animation: dialog-out 320ms var(--ease-out-expo) forwards;
+  pointer-events: none;
+}
+
+.product-info-dialog::backdrop {
+  transition: opacity 320ms var(--ease-out-expo);
+}
+
+.product-info-dialog[data-closing]::backdrop {
+  opacity: 0;
 }
 
 @keyframes scene-in {
@@ -297,4 +346,66 @@
 }
 .legal-prose a:hover {
   text-decoration-color: var(--color-ink);
+}
+
+.footer-link {
+  font-weight: 500;
+}
+.footer-link-text {
+  display: inline-block;
+}
+.footer-link:hover .footer-link-text,
+.footer-link:focus-visible .footer-link-text {
+  color: transparent;
+  background: linear-gradient(to top, var(--color-accent) 50%, var(--color-ink-2) 50%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.footer-wordmark-band {
+  display: flex;
+  height: clamp(5.5rem, 14vw, 11rem);
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-canvas);
+}
+.footer-wordmark {
+  display: block;
+  max-width: 100%;
+  opacity: 0.68;
+  padding-inline: 0.04em;
+  color: var(--color-ink);
+  font-size: clamp(4.5rem, 21vw, 16rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.76;
+  white-space: nowrap;
+  transform: translateY(0.1em);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button:not(:disabled):not([data-button-motion]),
+  [role='button']:not([data-button-motion]),
+  a[class~='rounded-full']:not([data-button-motion]) {
+    transition-property: transform, color, background-color, border-color, box-shadow;
+    transition-duration: 180ms;
+    transition-timing-function: var(--ease-standard);
+  }
+
+  button:not(:disabled):not([data-button-motion]):hover,
+  [role='button']:not([data-button-motion]):hover,
+  a[class~='rounded-full']:not([data-button-motion]):hover {
+    transform: translateY(-1px);
+  }
+
+  button:not(:disabled):not([data-button-motion]):active,
+  [role='button']:not([data-button-motion]):active,
+  a[class~='rounded-full']:not([data-button-motion]):active {
+    transform: translateY(0) scale(0.985);
+  }
 }

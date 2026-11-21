@@ -25,32 +25,38 @@ Company facts (legal name, CIN, address, socials) live in `src/lib/config.ts` an
 ## Search, answer-engine and generative-engine optimisation
 
 - **Prerendered HTML** — `npm run build` renders every page to static HTML (`scripts/prerender.mjs`), then the client hydrates it. AI crawlers that don't run JavaScript still read all copy, the FAQ and the schema.
-- **Pages** — `/`, `/privacy/`, `/terms/`, each with its own title, description, canonical URL and Open Graph tags.
-- **JSON-LD graph** (`src/components/seo/StructuredData.tsx`) — Organization (Triverse Solutions: legal name, address, CIN, socials), WebSite, SoftwareApplication (Trihub, published by Triverse), FAQPage, plus WebPage and BreadcrumbList on legal pages.
+- **Pages** — `/`, `/solutions/`, `/products/`, `/crm/`, `/erp/`, `/automation/`, `/custom-software/`, `/industries/`, `/pricing/`, `/faq/`, `/contact/`, `/privacy/` and `/terms/`. The existing ERP page remains on `trihub.tech/erp/`; a separate Education ERP landing page is available at `https://erp.trihub.tech/`.
+- **JSON-LD graph** (`src/components/seo/StructuredData.tsx`) — Organization (Triverse Solutions: legal name, address, CIN, socials), WebSite, SoftwareApplication (Trihub, published by Triverse), FAQPage, plus WebPage and BreadcrumbList on each content and legal page.
 - **FAQ** (`src/data/faq.ts`) — answer-first questions shown on the page and emitted as FAQPage from the same data.
 - **`/llms.txt`** — a plain summary of Trihub for LLMs.
 - **`robots.txt`** — explicitly allows GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended and others; **`sitemap.xml`** lists all pages.
 
 ## Structure
 
+Main-site route entry points live in the top-level `*/index.html` files and share `src/main.tsx`. The ERP subdomain has its own entry at `erp-site/index.html`, prerendered from `src/pages/ErpLandingApp.tsx`.
+
+Assign `erp.trihub.tech` to this Vercel project. Host-based rewrites serve `dist/erp-site/` at that domain; the main-site `/erp/` route remains separate.
+
 ```
 src/
   styles/index.css        Design system: tokens (@theme), base, components
   lib/                    config, motion tokens, shared pointer store, utils
   hooks/                  media queries, capabilities (WebGL/quality), in-view, tilt, fit-scale
-  data/                   all copy for modules, industries, pricing, nav
+  data/                   all copy for modules, industries, pricing, nav and page routes
   components/
     ui/                   Button (magnetic), Logo, Reveal, SectionHeading, DemoDialog
     layout/               Nav (glass, scroll progress, dark-section aware), Footer
     3d/                   WebGL only — isolated from regular UI
       CoreMark.tsx        the Trihub core (logo mark as a solid)
-      HeroScene.tsx       hero orbit + final-CTA "assembly" variant
+      ConnectedHeroScene.tsx hero connected-operations campus
+      HeroScene.tsx       final-CTA "assembly" variant
       SystemScene.tsx     interactive platform for the System section
       labelTexture.ts     module labels drawn to canvas textures
       materials.ts        3D material system
       Studio.tsx          procedural studio lighting (no HDR download)
       SceneMount.tsx      lazy-mount, visibility pausing, poster fallback
-  sections/               one file per page section, in page order
+  sections/               reusable page sections
+  pages/                  legal pages
 ```
 
 ## Design system
@@ -68,8 +74,8 @@ Defined once in `src/styles/index.css` and consumed through Tailwind utilities.
 
 Every 3D element is a product concept, not decoration:
 
-- **The core** is the Trihub logo as a solid. A cube split into three pyramids along its diagonal; the seams form the logo's Y. How far apart the pieces sit tells the story: slightly open in the hero, opening as you scroll away, closing as the final CTA assembles.
-- **Module cards** orbit the core and are linked to it by curves. Small indigo packets travel along each link (data flowing into the system). Hovering a card lifts it, slows the orbit, lights its link and reveals what it does. Clicking scrolls to that section.
+- **The core** is the Trihub logo as a solid. A cube split into three pyramids along its diagonal; the seams form the logo's Y. The final CTA scene animates the pieces assembling into one connected system.
+- **Hero modules** sit around the connected-operations campus and link to the Trihub mark. Hovering a module reveals what it does; clicking opens its dedicated solution page.
 - **The platform** (System section) turns to bring the selected module to the front and draws arcs to the modules it exchanges data with.
 - DOM-based 3D (CSS perspective) is used for the CRM, ERP, custom-software and industry compositions, where crisp text matters more than lighting.
 

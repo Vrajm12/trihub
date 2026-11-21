@@ -38,7 +38,18 @@ Pricing for every plan is provided on request after a demo.
 
 ## Pages
 
-- [Home](https://trihub.tech/): product overview, modules, industries, plans and FAQ
+- [Home](https://trihub.tech/): introduction to Trihub and the problem of disconnected business tools
+- [Our Solutions](https://trihub.tech/solutions/): CRM, ERP, workflow automation and custom software
+- [Our Products](https://trihub.tech/products/): the connected Trihub platform and modules
+- [CRM](https://trihub.tech/crm/): lead and customer relationship management
+- [ERP](https://trihub.tech/erp/): operations, procurement, inventory, HR and finance
+- [Trihub Education ERP](https://erp.trihub.tech/): a separate landing page for admissions, CAP counselling, attendance, examinations, fees and payroll preparation
+- [Automation](https://trihub.tech/automation/): cross-module business workflow automation
+- [Custom Software](https://trihub.tech/custom-software/): tailored tools, portals and integrations
+- [Industries Served](https://trihub.tech/industries/): industry-specific workflows
+- [Pricing](https://trihub.tech/pricing/): plans and implementation scope
+- [FAQ](https://trihub.tech/faq/): frequently asked questions
+- [Contact](https://trihub.tech/contact/): contact details and demo request
 - [Privacy Policy](https://trihub.tech/privacy/)
 - [Terms of Use](https://trihub.tech/terms/)
 - [Triverse Solutions](https://triversesolutions.co.in): the company that builds Trihub

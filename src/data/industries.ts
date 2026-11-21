@@ -18,7 +18,7 @@ export const industries: Industry[] = [
     icon: GraduationCap,
     headline: 'Admissions to alumni, on one record.',
     description:
-      'Track every enquiry from first call to enrolment, then manage students, fees and parent communication without switching tools.',
+      'Manage enquiries, admissions, students, fees and parent updates in one system.',
     modules: [
       { name: 'Admissions', detail: 'Enquiries, counselling, applications' },
       { name: 'Student Management', detail: 'Profiles, batches, attendance' },
@@ -33,7 +33,7 @@ export const industries: Industry[] = [
     icon: Building2,
     headline: 'Every portal lead and site visit, followed up.',
     description:
-      'Consolidate leads from property portals and ads, map them to inventory, schedule site visits and track bookings through payment.',
+      'Match leads to properties, schedule site visits, and manage bookings and payments.',
     modules: [
       { name: 'Leads', detail: 'Portals, ads, walk-ins, referrals' },
       { name: 'Properties', detail: 'Projects, towers, unit availability' },
@@ -48,7 +48,7 @@ export const industries: Industry[] = [
     icon: Factory,
     headline: 'Sales order to dispatch, without the spreadsheets.',
     description:
-      'Connect orders to bills of material, procurement and production so stock, cost and delivery dates stay accurate.',
+      'Connect orders, materials, procurement and production to keep costs and delivery dates on track.',
     modules: [
       { name: 'Inventory', detail: 'Raw material and finished goods' },
       { name: 'Procurement', detail: 'Vendors, POs, goods receipt' },
@@ -62,7 +62,7 @@ export const industries: Industry[] = [
     label: 'Professional Services',
     icon: Briefcase,
     headline: 'Clients, projects and billable hours in sync.',
-    description: 'Win engagements in CRM, run them as projects, log time against them and bill from the same record.',
+    description: 'Manage client engagements, projects, timesheets and billing in one workflow.',
     modules: [
       { name: 'Clients', detail: 'Accounts, contacts, proposals' },
       { name: 'Projects', detail: 'Milestones and ownership' },
@@ -76,7 +76,7 @@ export const industries: Industry[] = [
     label: 'Healthcare',
     icon: HeartPulse,
     headline: 'Front desk to billing, organised.',
-    description: 'Manage patient enquiries, appointments, staff rosters and billing for clinics and diagnostic centres.',
+    description: 'Coordinate patient enquiries, appointments, staff rosters and billing.',
     modules: [
       { name: 'Enquiries', detail: 'Calls, web forms, WhatsApp' },
       { name: 'Appointments', detail: 'Slots, reminders, reschedules' },
@@ -90,7 +90,7 @@ export const industries: Industry[] = [
     label: 'Retail',
     icon: Store,
     headline: 'Stores, stock and customers in one view.',
-    description: 'Keep inventory accurate across stores and warehouses, and turn one-time buyers into repeat customers.',
+    description: 'Manage stock across locations, fulfill orders and encourage repeat purchases.',
     modules: [
       { name: 'Inventory', detail: 'Store and warehouse stock' },
       { name: 'Orders', detail: 'In-store, online, B2B' },
@@ -105,7 +105,7 @@ export const industries: Industry[] = [
     icon: Rocket,
     headline: 'Start structured. Scale without migrating.',
     description:
-      'A CRM and operating layer that fits your current process and extends as the team, products and markets grow.',
+      'Start with CRM and workflows that scale with your team, products and markets.',
     modules: [
       { name: 'Sales Pipeline', detail: 'Leads, demos, deals' },
       { name: 'Customer Success', detail: 'Onboarding and renewals' },
@@ -120,7 +120,7 @@ export const industries: Industry[] = [
     icon: Building,
     headline: 'One system instead of six subscriptions.',
     description:
-      'Sales, accounts, people and stock for growing businesses that have outgrown spreadsheets and disconnected apps.',
+      'Connect sales, accounting, HR and inventory without juggling separate tools.',
     modules: [
       { name: 'CRM', detail: 'Leads, customers, follow-ups' },
       { name: 'Accounts', detail: 'Invoices, receivables, expenses' },

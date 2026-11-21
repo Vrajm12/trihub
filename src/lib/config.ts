@@ -9,6 +9,13 @@
 export const site = {
   name: 'Trihub',
   url: 'https://trihub.tech',
+  erpUrl: 'https://erp.trihub.tech/',
+  crmUrl: 'https://crm.trihub.tech/',
+  automationUrl: 'https://automation.trihub.tech/',
+  mfgUrl: 'https://mfg.trihub.tech/',
+  financeUrl: 'https://finance.trihub.tech/',
+  outreachUrl: 'https://outreach.trihub.tech/',
+  leadsUrl: 'https://leads.trihub.tech/',
   contactEmail: 'support@trihub.tech',
   demoEndpoint: '' as string,
 }

@@ -1,5 +1,6 @@
 import { company, site } from '@/lib/config'
 import { faqs } from '@/data/faq'
+import { sitePages, type SitePageId } from '@/data/pages'
 
 /**
  * JSON-LD entity graph. Rendered into the prerendered HTML so search engines
@@ -80,24 +81,18 @@ function software() {
   }
 }
 
-type Page = 'home' | 'privacy' | 'terms'
+type Page = SitePageId | 'privacy' | 'terms' | 'not-found'
 
 export function StructuredData({ page }: { page: Page }) {
+  if (page === 'not-found') return null
   const graph: object[] = [organization(), website()]
 
   if (page === 'home') {
-    graph.push(software(), {
-      '@type': 'FAQPage',
-      '@id': `${site.url}/#faq`,
-      mainEntity: faqs.map((f) => ({
-        '@type': 'Question',
-        name: f.q,
-        acceptedAnswer: { '@type': 'Answer', text: f.a },
-      })),
-    })
+    graph.push(software())
   } else {
-    const name = page === 'privacy' ? 'Privacy Policy' : 'Terms of Use'
-    const url = `${site.url}/${page}/`
+    const route = sitePages.find((item) => item.id === page)
+    const name = page === 'privacy' ? 'Privacy Policy' : page === 'terms' ? 'Terms of Use' : route?.name
+    const url = page === 'privacy' || page === 'terms' ? `${site.url}/${page}/` : `${site.url}${route?.path ?? '/'}`
     graph.push(
       { '@type': 'WebPage', '@id': url, url, name, isPartOf: { '@id': SITE_ID }, publisher: { '@id': ORG_ID } },
       {
@@ -108,6 +103,18 @@ export function StructuredData({ page }: { page: Page }) {
         ],
       },
     )
+  }
+
+  if (page === 'faq') {
+    graph.push({
+      '@type': 'FAQPage',
+      '@id': `${site.url}/faq/#faq`,
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    })
   }
 
   const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')

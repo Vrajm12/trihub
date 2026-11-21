@@ -91,7 +91,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
             </div>
           ) : (
             <form onSubmit={onSubmit}>
-              <LogoMark className="h-7 w-7 text-ink" />
+              <div className="inline-flex items-center gap-2.5 text-ink">
+                <LogoMark className="h-7 w-7 text-ink" />
+                <span className="text-[1.3125rem] font-semibold leading-none tracking-[-0.04em]">Trihub</span>
+              </div>
               <h2 id="demo-title" className="mt-5 text-[1.625rem] font-semibold tracking-[-0.025em]">
                 {intent === 'demo' ? 'Book a demo' : 'Talk to our team'}
               </h2>

@@ -1,0 +1,15 @@
+export const erpModules = [
+  { label: 'Admission CRM', slug: 'admission-crm' },
+  { label: 'Campus Management System (CMS) Software', slug: 'campus-management-system' },
+  { label: 'Fee Management System', slug: 'fee-management-system' },
+  { label: 'Learning Management System (LMS)', slug: 'learning-management-system' },
+  { label: 'University Management System (UMS) Software', slug: 'university-management-system' },
+  { label: 'Human Resource Management System (HRMS)', slug: 'human-resource-management-system' },
+  { label: 'Examination Management System (EMS) Software', slug: 'examination-management-system' },
+  { label: 'Alumni Management System', slug: 'alumni-management-system' },
+  { label: 'Academic Management System (AMS) Software', slug: 'academic-management-system' },
+  { label: 'Office Automation (ERP)', slug: 'office-automation' },
+  { label: 'Student Information System (SIS) Software', slug: 'student-information-system' },
+  { label: 'Library Management System', slug: 'library-management-system' },
+  { label: 'Outcome Based Education (OBE) Software', slug: 'outcome-based-education' },
+] as const

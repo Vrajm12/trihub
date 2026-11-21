@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import { useReducedMotion } from 'framer-motion'
-import { useMediaQuery } from './useMediaQuery'
+import { useMediaQuery, usePrefersReducedMotion } from './useMediaQuery'
 
 let webglCache: boolean | null = null
 function detectWebGL() {
@@ -22,7 +21,7 @@ export type Quality = 'high' | 'low'
  * low   → touch / small screens / few cores: opaque materials, capped DPR.
  */
 export function useCapabilities() {
-  const reducedMotion = !!useReducedMotion()
+  const reducedMotion = usePrefersReducedMotion()
   const small = useMediaQuery('(max-width: 767px)')
   const fine = useMediaQuery('(hover: hover) and (pointer: fine)')
 

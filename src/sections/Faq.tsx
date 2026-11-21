@@ -7,12 +7,12 @@ import { faqs } from '@/data/faq'
  * Native <details> keeps every answer in the HTML (readable by crawlers and
  * answer engines) while staying keyboard- and screen-reader-friendly.
  */
-export function Faq() {
+export function Faq({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' }) {
   return (
     <section id="faq" aria-labelledby="faq-title" className="section-y relative border-t border-line">
       <div className="container-x grid gap-12 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-4">
-          <SectionHeading id="faq-title" eyebrow="FAQ" title="Questions, answered." lead="What Trihub is, who it is for, and how working with us runs." />
+          <SectionHeading id="faq-title" level={headingLevel} eyebrow="FAQ" title="Questions, answered." lead="What Trihub is, who it is for, and how working with us runs." />
         </div>
         <div className="lg:col-span-8">
           <div className="border-t border-line">

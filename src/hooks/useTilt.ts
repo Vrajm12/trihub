@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from 'framer-motion'
 import { pointer } from '@/lib/pointer'
 import { damp } from '@/lib/utils'
+import { usePrefersReducedMotion } from './useMediaQuery'
 
 /**
  * Applies a damped rotateX/rotateY to an element based on the shared pointer.
@@ -11,7 +11,7 @@ export function useTilt<T extends HTMLElement>(
   { max = 6, baseX = 0, baseY = 0 }: { max?: number; baseX?: number; baseY?: number } = {},
 ) {
   const ref = useRef<T>(null)
-  const reduced = useReducedMotion()
+  const reduced = usePrefersReducedMotion()
 
   useEffect(() => {
     const el = ref.current

@@ -5,6 +5,158 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/sitemap.xml"
+    },
+    {
+      "source": "/products/",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/modules/"
+    },
+    {
+      "source": "/products/:slug",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/modules/:slug/"
+    },
+    {
+      "source": "/about/(.*)",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/about/"
+    },
+    {
+      "source": "/blogs/(.*)",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/blogs/"
+    },
+    {
+      "source": "/contact/(.*)",
+      "has": [{ "type": "host", "value": "erp.trihub.tech" }],
+      "destination": "/erp-site/contact/"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "crm.trihub.tech" }],
+      "destination": "/crm-site/"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [{ "type": "host", "value": "crm.trihub.tech" }],
+      "destination": "/crm-site/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [{ "type": "host", "value": "crm.trihub.tech" }],
+      "destination": "/crm-site/sitemap.xml"
+    },
+    {
+      "source": "/products/",
+      "has": [{ "type": "host", "value": "crm.trihub.tech" }],
+      "destination": "/crm-site/modules/"
+    },
+    {
+      "source": "/products/:slug",
+      "has": [{ "type": "host", "value": "crm.trihub.tech" }],
+      "destination": "/crm-site/modules/:slug/"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "automation.trihub.tech" }],
+      "destination": "/automation-site/"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [{ "type": "host", "value": "automation.trihub.tech" }],
+      "destination": "/automation-site/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [{ "type": "host", "value": "automation.trihub.tech" }],
+      "destination": "/automation-site/sitemap.xml"
+    },
+    {
+      "source": "/products/",
+      "has": [{ "type": "host", "value": "automation.trihub.tech" }],
+      "destination": "/automation-site/modules/"
+    },
+    {
+      "source": "/products/:slug",
+      "has": [{ "type": "host", "value": "automation.trihub.tech" }],
+      "destination": "/automation-site/modules/:slug/"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "mfg.trihub.tech" }],
+      "destination": "/mfg-site/"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [{ "type": "host", "value": "mfg.trihub.tech" }],
+      "destination": "/mfg-site/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [{ "type": "host", "value": "mfg.trihub.tech" }],
+      "destination": "/mfg-site/sitemap.xml"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "finance.trihub.tech" }],
+      "destination": "/finance-site/"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [{ "type": "host", "value": "finance.trihub.tech" }],
+      "destination": "/finance-site/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [{ "type": "host", "value": "finance.trihub.tech" }],
+      "destination": "/finance-site/sitemap.xml"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "outreach.trihub.tech" }],
+      "destination": "/outreach-site/"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [{ "type": "host", "value": "outreach.trihub.tech" }],
+      "destination": "/outreach-site/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [{ "type": "host", "value": "outreach.trihub.tech" }],
+      "destination": "/outreach-site/sitemap.xml"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "leads.trihub.tech" }],
+      "destination": "/leads-site/"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [{ "type": "host", "value": "leads.trihub.tech" }],
+      "destination": "/leads-site/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "has": [{ "type": "host", "value": "leads.trihub.tech" }],
+      "destination": "/leads-site/sitemap.xml"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

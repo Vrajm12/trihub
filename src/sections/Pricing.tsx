@@ -19,7 +19,7 @@ function Features({ items, night = false }: { items: string[]; night?: boolean }
   )
 }
 
-export function Pricing() {
+export function Pricing({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' }) {
   const { open } = useDemo()
   return (
     <section id="pricing" aria-labelledby="pricing-title" className="section-y relative">
@@ -27,6 +27,7 @@ export function Pricing() {
         <SectionHeading
           align="center"
           id="pricing-title"
+          level={headingLevel}
           eyebrow="Pricing"
           title="Priced around your business, not a template."
           lead="Every plan starts with a demo configured to your workflow. Pricing depends on users, modules and implementation scope."

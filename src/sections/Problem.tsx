@@ -1,195 +1,266 @@
 import { useRef } from 'react'
-import { motion, useMotionValue, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import {
-  FileSpreadsheet,
-  MessageCircle,
-  Mail,
-  Users,
-  Calculator,
-  UserRound,
-  Package,
-  ChartLine,
-  type LucideIcon,
-} from 'lucide-react'
-import { LogoMark } from '@/components/ui/Logo'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'framer-motion'
+import { Calculator, MessageCircle, Users, Workflow, type LucideIcon } from 'lucide-react'
+import { useMediaQuery, usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 
-interface Tool {
+interface Handoff {
   name: string
   icon: LucideIcon
-  issue: string
-  synced: string
-  /** scattered position (% of stage), rotation (deg) and depth scale */
-  from: [number, number, number, number]
+  before: string
+  after: string
+  from: [number, number]
+  to: [number, number]
+  rotation: number
 }
 
-const tools: Tool[] = [
-  { name: 'Spreadsheet', icon: FileSpreadsheet, issue: 'Leads_final_v3.xlsx', synced: 'Leads in pipeline', from: [12, 22, -9, 0.92] },
-  { name: 'WhatsApp', icon: MessageCircle, issue: '38 unread · not logged', synced: 'On deal timeline', from: [84, 16, 7, 1] },
-  { name: 'Email', icon: Mail, issue: 'Re: Fwd: Revised quote', synced: 'Threaded to account', from: [64, 82, -6, 0.95] },
-  { name: 'CRM', icon: Users, issue: '212 duplicate contacts', synced: 'One customer record', from: [30, 70, 10, 0.88] },
-  { name: 'Accounting', icon: Calculator, issue: 'Invoice not linked to deal', synced: 'Raised from won deal', from: [90, 58, -11, 0.9] },
-  { name: 'HR', icon: UserRound, issue: 'Leave tracker (shared sheet)', synced: 'Roles and access', from: [8, 56, 5, 0.97] },
-  { name: 'Inventory', icon: Package, issue: 'Stock count mismatch', synced: 'Live across locations', from: [44, 30, 4, 0.9] },
-  { name: 'Analytics', icon: ChartLine, issue: 'Report updated 9 days ago', synced: 'Live dashboard', from: [70, 38, -4, 0.86] },
+const handoffs: Handoff[] = [
+  {
+    name: 'CRM',
+    icon: Users,
+    before: 'Duplicate contact',
+    after: 'One customer record',
+    from: [19, 28],
+    to: [14, 43],
+    rotation: -7,
+  },
+  {
+    name: 'Automation',
+    icon: Workflow,
+    before: 'Follow-up left to memory',
+    after: 'Owner assigned automatically',
+    from: [80, 24],
+    to: [38, 43],
+    rotation: 6,
+  },
+  {
+    name: 'WhatsApp',
+    icon: MessageCircle,
+    before: 'Reply missing from CRM',
+    after: 'Message on the timeline',
+    from: [24, 76],
+    to: [62, 43],
+    rotation: 5,
+  },
+  {
+    name: 'Finance',
+    icon: Calculator,
+    before: 'Invoice retyped by hand',
+    after: 'Invoice from the won deal',
+    from: [82, 72],
+    to: [86, 43],
+    rotation: -6,
+  },
 ]
 
-function ToolCard({ tool, i, progress, compact }: { tool: Tool; i: number; progress: MotionValue<number>; compact: boolean }) {
-  const n = tools.length
-  const angle = (i / n) * Math.PI * 2 - Math.PI / 2
-  const rx = compact ? 29 : 34
-  const ry = compact ? 36 : 33
-  const to = [50 + Math.cos(angle) * rx, 52 + Math.sin(angle) * ry]
-  const [fx, fy, frot, fscale] = tool.from
+const compactTo: readonly [number, number][] = [
+  [25, 36],
+  [75, 36],
+  [75, 69],
+  [25, 69],
+]
+const compactFrom: readonly [number, number][] = [
+  [24, 34],
+  [76, 31],
+  [24, 70],
+  [76, 74],
+]
 
-  const a = 0.14 + i * 0.012
-  const b = 0.56 + i * 0.012
-  const left = useTransform(progress, [a, b], [`${fx}%`, `${to[0]}%`])
-  const top = useTransform(progress, [a, b], [`${fy}%`, `${to[1]}%`])
-  const rotate = useTransform(progress, [a, b], [frot, 0])
-  const rotateX = useTransform(progress, [a, b], [i % 2 ? 18 : -14, 0])
-  const scale = useTransform(progress, [a, b], [fscale, 1])
-  const issue = useTransform(progress, [0.6, 0.72], [1, 0])
-  const ok = useTransform(progress, [0.66, 0.78], [0, 1])
+function HandoffCard({
+  handoff,
+  progress,
+  compact,
+  index,
+}: {
+  handoff: Handoff
+  progress: MotionValue<number>
+  compact: boolean
+  index: number
+}) {
+  const from = compact ? compactFrom[index] : handoff.from
+  const to = compact ? compactTo[index] : handoff.to
+  const left = useTransform(progress, [0.12, 0.7], [`${from[0]}%`, `${to[0]}%`])
+  const top = useTransform(progress, [0.12, 0.7], [`${from[1]}%`, `${to[1]}%`])
+  const rotate = useTransform(progress, [0.12, 0.7], [handoff.rotation, 0])
+  const rotateX = useTransform(progress, [0.12, 0.7], [index % 2 ? -12 : 12, 0])
+  const scale = useTransform(progress, [0.12, 0.7], [0.94, 1])
+  const disconnected = useTransform(progress, [0.4, 0.66], [1, 0])
+  const connected = useTransform(progress, [0.52, 0.78], [0, 1])
+  const Icon = handoff.icon
 
-  const Icon = tool.icon
   return (
-    <motion.div className="absolute" style={{ left, top }}>
+    <motion.li className="absolute z-10" style={{ left, top }}>
       <motion.div
         style={{ rotate, rotateX, scale }}
-        className="card -translate-x-1/2 -translate-y-1/2 shadow-md [transform-style:preserve-3d]"
+        className={`card relative ${compact ? 'w-[min(40vw,220px)]' : 'w-[min(20vw,220px)]'} -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white/95 p-3 shadow-md sm:p-4 [transform-style:preserve-3d] will-change-transform`}
       >
-        <div className={compact ? 'flex w-[128px] items-center gap-2 p-2.5' : 'w-[214px] p-3.5'}>
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] bg-surface-2 text-ink">
-              <Icon size={15} strokeWidth={1.9} />
-            </span>
-            <span className="text-[0.8125rem] font-semibold tracking-[-0.01em]">{tool.name}</span>
-          </div>
-          {compact && (
-            <span className="relative ml-auto h-1.5 w-1.5 shrink-0">
-              <motion.span style={{ opacity: issue }} className="absolute inset-0 rounded-full bg-caution" />
-              <motion.span style={{ opacity: ok }} className="absolute inset-0 rounded-full bg-positive" />
-            </span>
-          )}
-          {!compact && (
-            <div className="relative mt-3 h-[22px]">
-              <motion.span
-                style={{ opacity: issue }}
-                className="absolute inset-0 flex items-center gap-1.5 truncate text-[0.75rem] text-caution"
-              >
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-caution" />
-                {tool.issue}
-              </motion.span>
-              <motion.span
-                style={{ opacity: ok }}
-                className="absolute inset-0 flex items-center gap-1.5 truncate text-[0.75rem] text-positive"
-              >
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-positive" />
-                {tool.synced}
-              </motion.span>
-            </div>
-          )}
+        <div className="flex items-center gap-2.5">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[9px] bg-surface-2 text-ink">
+            <Icon size={16} strokeWidth={1.9} />
+          </span>
+          <span className="truncate text-[0.8125rem] font-semibold tracking-[-0.01em] sm:text-[0.9375rem]">{handoff.name}</span>
+        </div>
+        <div className="relative mt-3 h-8 overflow-hidden border-t border-line pt-2">
+          <motion.span
+            style={{ opacity: disconnected }}
+            className="absolute inset-x-0 top-2 flex min-w-0 items-center gap-1.5 truncate text-[0.6875rem] text-caution sm:text-[0.75rem]"
+          >
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-caution" />
+            {handoff.before}
+          </motion.span>
+          <motion.span
+            style={{ opacity: connected }}
+            className="absolute inset-x-0 top-2 flex min-w-0 items-center gap-1.5 truncate text-[0.6875rem] font-medium text-positive sm:text-[0.75rem]"
+          >
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-positive" />
+            {handoff.after}
+          </motion.span>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.li>
   )
 }
 
-function Link({ i, progress, compact }: { i: number; progress: MotionValue<number>; compact: boolean }) {
-  const angle = (i / tools.length) * Math.PI * 2 - Math.PI / 2
-  const rx = compact ? 29 : 34
-  const ry = compact ? 36 : 33
-  const pathLength = useTransform(progress, [0.58 + i * 0.01, 0.74 + i * 0.01], [0, 1])
+function Connection({
+  index,
+  progress,
+  compact,
+}: {
+  index: number
+  progress: MotionValue<number>
+  compact: boolean
+}) {
+  const positions = compact ? compactTo : handoffs.map((handoff) => handoff.to)
+  const from = positions[index]
+  const to = positions[index + 1]
+  const connected = useTransform(progress, [0.28 + index * 0.025, 0.7], [0, 1])
+
   return (
     <motion.line
-      x1="50%"
-      y1="52%"
-      x2={`${50 + Math.cos(angle) * rx}%`}
-      y2={`${52 + Math.sin(angle) * ry}%`}
-      stroke="currentColor"
-      strokeWidth={1}
-      style={{ pathLength }}
+      x1={`${from[0]}%`}
+      y1={`${from[1]}%`}
+      x2={`${to[0]}%`}
+      y2={`${to[1]}%`}
+      stroke="var(--color-accent)"
+      strokeWidth="1.5"
+      strokeDasharray="5 6"
+      style={{ pathLength: connected, opacity: connected }}
     />
   )
 }
 
 export function Problem() {
   const ref = useRef<HTMLElement>(null)
-  const reduced = useReducedMotion()
-  const compact = useMediaQuery('(max-width: 767px)')
+  const reduced = usePrefersReducedMotion()
+  const compact = useMediaQuery('(max-width: 1023px)')
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
   const settled = useMotionValue(1)
-  const p = reduced ? settled : scrollYProgress
+  const easedScrollProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.45,
+    restDelta: 0.001,
+  })
+  const progress = reduced ? settled : easedScrollProgress
 
-  const headA = useTransform(p, [0.32, 0.46], [1, 0])
-  const headAy = useTransform(p, [0.32, 0.46], [0, -24])
-  const headB = useTransform(p, [0.62, 0.76], [0, 1])
-  const headBy = useTransform(p, [0.62, 0.76], [24, 0])
-  const coreScale = useTransform(p, [0.42, 0.62], [0.4, 1])
-  const coreOpacity = useTransform(p, [0.42, 0.56], [0, 1])
-  const pulse = useTransform(p, [0.74, 0.9], [0, 1])
-  const pulseScale = useTransform(pulse, [0, 1], [0.8, 1.35])
+  const problemOpacity = useTransform(progress, [0.3, 0.56], [1, 0])
+  const problemY = useTransform(progress, [0.3, 0.56], [0, -14])
+  const solutionOpacity = useTransform(progress, [0.46, 0.7], [0, 1])
+  const solutionY = useTransform(progress, [0.46, 0.7], [14, 0])
+  const packetLeft = useTransform(progress, [0.5, 0.64, 0.78, 0.91], compact ? ['25%', '75%', '75%', '25%'] : ['14%', '38%', '62%', '86%'])
+  const packetTop = useTransform(progress, [0.5, 0.64, 0.78, 0.91], compact ? ['36%', '36%', '69%', '69%'] : ['43%', '43%', '43%', '43%'])
+  const packetOpacity = useTransform(progress, [0.46, 0.54, 0.88, 0.94], [0, 1, 1, 0])
+  const messyStatus = useTransform(progress, [0.32, 0.55], [1, 0])
+  const connectedStatus = useTransform(progress, [0.48, 0.72], [0, 1])
+  const connections = handoffs.length - 1
 
   return (
     <section
       ref={ref}
       id="problem"
       aria-labelledby="problem-title"
-      className={reduced ? 'relative' : 'relative h-[280vh]'}
+      className={reduced ? 'relative py-20 md:py-28' : 'relative h-[260vh]'}
     >
-      <div className={reduced ? 'relative h-[100svh] min-h-[640px]' : 'sticky top-0 h-[100svh] min-h-[640px] overflow-hidden'}>
-        {/* Headline — swaps from the problem to the resolution */}
-        <div className="container-x relative z-20 pt-[calc(var(--nav-h)+3rem)] text-center">
+      <div className={reduced ? 'relative min-h-[760px] sm:min-h-[680px]' : 'sticky top-0 h-[100svh] min-h-[640px] overflow-hidden'}>
+        <div className="container-x relative z-20 pt-[calc(var(--nav-h)+2.5rem)] text-center">
           <p className="eyebrow">The problem</p>
-          <div className="relative mx-auto mt-5 max-w-3xl">
-            <motion.h2
-              id="problem-title"
-              style={{ opacity: headA, y: headAy }}
-              className="text-h2 font-semibold"
-            >
-              Your business shouldn’t run across ten different tools.
-            </motion.h2>
-            <motion.div style={{ opacity: headB, y: headBy }} className="absolute inset-x-0 top-0">
-              <p className="text-h2 font-semibold tracking-[-0.032em] text-ink">Bring the workflow together.</p>
-              <p className="mx-auto mt-4 max-w-md text-lead text-ink-2">
-                One record for every customer, order and invoice — shared by every team.
+          <div className="relative mx-auto mt-5 min-h-[7.5rem] max-w-3xl sm:min-h-[8rem]">
+            <motion.div style={{ opacity: problemOpacity, y: problemY }} className="absolute inset-x-0 top-0">
+              <h2 id="problem-title" className="text-h2 font-semibold">
+                One new lead. Four disconnected handoffs.
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-[0.9375rem] text-ink-2 sm:text-lead">
+                Follow Meera Textiles as the enquiry moves from sales to a sent invoice.
+              </p>
+            </motion.div>
+            <motion.div style={{ opacity: solutionOpacity, y: solutionY }} className="absolute inset-x-0 top-0">
+              <h2 className="text-h2 font-semibold">One enquiry. One connected workflow.</h2>
+              <p className="mx-auto mt-3 max-w-xl text-[0.9375rem] text-ink-2 sm:text-lead">
+                A single customer record carries its context from first reply to finance.
               </p>
             </motion.div>
           </div>
         </div>
 
-        {/* Stage */}
-        <div className="stage-3d absolute inset-x-0 bottom-0 top-[calc(var(--nav-h)+11rem)] md:top-[calc(var(--nav-h)+9rem)]">
+        <div className="stage-3d absolute inset-x-0 bottom-0 top-[calc(var(--nav-h)+13rem)] sm:top-[calc(var(--nav-h)+12rem)]">
           <div className="container-x relative h-full">
-            <svg aria-hidden className="absolute inset-0 h-full w-full text-accent/40">
-              {tools.map((_, i) => (
-                <Link key={i} i={i} progress={p} compact={compact} />
+            <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
+              {Array.from({ length: connections }, (_, index) => (
+                <Connection key={index} index={index} progress={progress} compact={compact} />
               ))}
             </svg>
 
             <motion.div
               aria-hidden
-              style={{ scale: coreScale, opacity: coreOpacity }}
-              className="absolute left-1/2 top-[52%] z-10 -translate-x-1/2 -translate-y-1/2"
+              style={{ left: packetLeft, top: packetTop, opacity: packetOpacity }}
+              className="absolute z-20 -translate-x-1/2 -translate-y-1/2"
             >
-              <motion.span
-                style={{ opacity: pulse, scale: pulseScale }}
-                className="absolute inset-0 rounded-[24px] ring-1 ring-accent/25"
-              />
-              <div className="relative grid h-[92px] w-[92px] place-items-center rounded-[24px] bg-night shadow-float md:h-[112px] md:w-[112px]">
-                <LogoMark className="h-11 w-11 text-white md:h-14 md:w-14" />
-              </div>
-              <p className="mt-3 text-center text-[0.6875rem] font-semibold tracking-[0.16em] text-ink-2">TRIHUB</p>
+              <span className="block h-3 w-3 rounded-full bg-accent shadow-[0_0_0_5px_rgb(79_70_229/0.14),0_0_22px_rgb(79_70_229/0.38)]" />
             </motion.div>
 
-            <ul aria-label="Tools Trihub replaces or connects" className="absolute inset-0">
-              {tools.map((t, i) => (
-                <li key={t.name}>
-                  <ToolCard tool={t} i={i} progress={p} compact={compact} />
-                </li>
+            <motion.div
+              aria-hidden
+              style={{ opacity: connectedStatus }}
+              className="absolute left-1/2 top-[16%] z-20 -translate-x-1/2"
+            >
+              <span className="inline-flex items-center gap-2 rounded-full border border-positive/15 bg-white/90 px-3 py-1.5 text-[0.6875rem] font-medium text-positive shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-positive" />
+                One live customer record
+              </span>
+            </motion.div>
+
+            <motion.div
+              aria-hidden
+              style={{ opacity: messyStatus }}
+              className="absolute left-1/2 top-[16%] z-20 -translate-x-1/2"
+            >
+              <span className="inline-flex items-center gap-2 rounded-full border border-caution/15 bg-white/90 px-3 py-1.5 text-[0.6875rem] font-medium text-ink-2 shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-caution" />
+                Context lost at every handoff
+              </span>
+            </motion.div>
+
+            <ul aria-label="One enquiry passing through four connected business stages" className="absolute inset-0">
+              {handoffs.map((handoff, index) => (
+                <HandoffCard
+                  key={handoff.name}
+                  handoff={handoff}
+                  index={index}
+                  progress={progress}
+                  compact={compact}
+                />
               ))}
             </ul>
+
+            <p className="absolute inset-x-0 bottom-3 px-4 text-center text-[0.6875rem] text-ink-2 sm:bottom-5 sm:text-[0.75rem]">
+              Separate records and manual handoffs become one shared customer journey.
+            </p>
           </div>
         </div>
       </div>

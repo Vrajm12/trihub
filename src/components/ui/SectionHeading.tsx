@@ -7,22 +7,24 @@ interface Props {
   title: ReactNode
   lead?: ReactNode
   id?: string
+  level?: 'h1' | 'h2'
   align?: 'left' | 'center'
   tone?: 'light' | 'night'
   className?: string
 }
 
-export function SectionHeading({ eyebrow, title, lead, id, align = 'left', tone = 'light', className }: Props) {
+export function SectionHeading({ eyebrow, title, lead, id, level = 'h2', align = 'left', tone = 'light', className }: Props) {
   const night = tone === 'night'
+  const Heading = level
   return (
     <div className={cn(align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-2xl', className)}>
       <Reveal>
         <p className={cn('eyebrow', night && '!text-night-ink-2')}>{eyebrow}</p>
       </Reveal>
       <Reveal index={1}>
-        <h2 id={id} className={cn('mt-5 text-h2 font-semibold', night ? 'text-night-ink' : 'text-ink')}>
+        <Heading id={id} className={cn('mt-5 text-h2 font-semibold', night ? 'text-night-ink' : 'text-ink')}>
           {title}
-        </h2>
+        </Heading>
       </Reveal>
       {lead && (
         <Reveal index={2}>

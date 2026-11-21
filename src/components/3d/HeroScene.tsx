@@ -22,13 +22,13 @@ const ICONS: Record<string, LucideIcon> = {
   Inventory: Package,
 }
 const TARGETS: Record<string, string> = {
-  CRM: '#crm',
-  ERP: '#erp',
-  Automation: '#automation',
-  Analytics: '#platform',
-  HR: '#platform',
-  Finance: '#platform',
-  Inventory: '#erp',
+  CRM: '/crm/',
+  ERP: '/erp/',
+  Automation: '/automation/',
+  Analytics: '/products/',
+  HR: '/erp/',
+  Finance: '/erp/',
+  Inventory: '/erp/',
 }
 
 const FOV = 30
@@ -333,7 +333,7 @@ function System({ reduced, quality, getProgress, variant }: SceneProps & { varia
                 material={cardMats[i]}
                 onPointerOver={onOver(i)}
                 onPointerOut={onOut}
-                onClick={() => document.querySelector(TARGETS[m.label])?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => window.location.assign(TARGETS[m.label])}
               />
               <mesh position={[0, 0, 0.046]} material={labelMats[i]}>
                 <planeGeometry args={[layout.cardW, layout.cardH]} />

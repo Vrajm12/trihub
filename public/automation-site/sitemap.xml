@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://automation.trihub.tech/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://automation.trihub.tech/products/automated-workflows/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://automation.trihub.tech/products/whatsapp-automation/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://automation.trihub.tech/products/scheduling-and-reminders/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://automation.trihub.tech/products/document-and-data-automation/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://automation.trihub.tech/products/tool-integrations/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://automation.trihub.tech/products/real-time-logs-and-reports/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>

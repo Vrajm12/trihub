@@ -1,14 +1,14 @@
 import { StrictMode, type ReactNode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
+import { resolvePage } from './data/pages'
 import './styles/index.css'
 
 /**
- * Each HTML page declares which app it hosts via data-page. Pages are
- * prerendered at build time (scripts/prerender.mjs), so the client hydrates
- * existing markup; in dev the root is empty and we render from scratch.
+ * Pages are prerendered at build time (scripts/prerender.mjs), so the client
+ * hydrates existing markup; in dev the root is empty and we render from scratch.
  */
 const root = document.getElementById('root')!
-const page = root.dataset.page ?? 'home'
+const page = resolvePage(window.location.pathname)
 
 async function boot() {
   let app: ReactNode
@@ -17,7 +17,7 @@ async function boot() {
     app = <LegalApp page={page} />
   } else {
     const { default: App } = await import('./App')
-    app = <App />
+    app = <App page={page} />
   }
   const tree = <StrictMode>{app}</StrictMode>
   if (root.firstElementChild) hydrateRoot(root, tree)

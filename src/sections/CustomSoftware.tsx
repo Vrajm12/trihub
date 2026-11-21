@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import {
   ArrowRight,
   Users,
@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button'
 import { useDemo } from '@/components/ui/DemoDialog'
 import { useFitScale } from '@/hooks/useFitScale'
 import { useTilt } from '@/hooks/useTilt'
+import { usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 
 const builds = [
   { icon: Users, label: 'Custom CRM', detail: 'Your stages, fields and approvals' },
@@ -44,7 +45,7 @@ function LayerLabel({ n, text }: { n: string; text: string }) {
 
 function Blueprint() {
   const ref = useRef<HTMLDivElement>(null)
-  const reduced = useReducedMotion()
+  const reduced = usePrefersReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'center center'] })
   const spread = useTransform(scrollYProgress, [0, 1], reduced ? [1, 1] : [0.15, 1])
   const tilt = useTilt<HTMLDivElement>({ max: 4, baseX: 12, baseY: -22 })
@@ -136,7 +137,7 @@ function Blueprint() {
   )
 }
 
-export function CustomSoftware() {
+export function CustomSoftware({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' }) {
   const { open } = useDemo()
   return (
     <section id="custom" aria-labelledby="custom-title" className="section-y relative border-t border-line">
@@ -144,6 +145,7 @@ export function CustomSoftware() {
         <div className="lg:col-span-5">
           <SectionHeading
             id="custom-title"
+            level={headingLevel}
             eyebrow="Custom software"
             title="If your workflow is different, your software should be too."
             lead="We design and build custom business platforms around your processes — not the other way around."
